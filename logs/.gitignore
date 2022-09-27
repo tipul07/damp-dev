@@ -1,0 +1,4 @@
+*
+!.gitignore
+!php-access.dist.log
+!php-error.dist.log
