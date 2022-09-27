@@ -1,20 +1,26 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+
+Docker Apache-MySQL-PHP dev environment 
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+1. After pulling docker files, run `_setup.bat`.
+2. Do `docker-compose up -d` which will download and build your images
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# MySQL Setup
+1. Dump your database from where it is now using `mysqldump -u {MySQLUser} -p {OldDatabaseName} > {OldDatabaseName}.sql`
+2. Make sure your containers are started `docker-compose up -d`
+3. Do `docker exec -it mysql bash`
+4. Do `mysql -u {DockerMySQLUser} -p {DockerMySQLDatabase} < {OldDatabaseName}.sql`
+5. You should see `mysql/{DockerMySQLDatabase}` directory populated
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+# Testing PHP - MySQL connection
+1. Open browser and go to `http://127.0.0.1:8080/`
+2. You should see `Connected successfully`
+3. Once all is ok
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# Project Files Setup
+1. Project files should be copied to `src/` directory (`index.php` file which is the entry point of the project should be located in `src/` directory)
+2. `src/` directory will be mounted on both `web` and `php` docker images in `/srv/www`
+3. Do `docker exec -it php bash` and make sure all symlinks in the project are updated to match the new paths.
+4. To test working copy is ok, open browser and go to `http://127.0.0.1:8080/`.
+

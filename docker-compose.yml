@@ -1,0 +1,49 @@
+version: '3'
+services:
+    web:
+        build:
+            context: .
+            dockerfile: apache2.Dockerfile
+        container_name: web
+        environment:
+            TZ: 'UTC'
+        ports:
+            - "8080:80"
+        volumes:
+            - ./apache2.conf:/etc/apache2/apache2.conf
+            - ./src:/srv/www
+        depends_on:
+            - mysql
+        restart: always
+        
+    php:
+        build:
+            context: .
+            dockerfile: php.Dockerfile
+        container_name: php
+        # Port is exported in PHP-FPM pool settings
+        #ports:
+        #    - 9000:9000
+        volumes:
+            - ./src:/srv/www
+            - ./php_settings.conf:/usr/local/etc/php-fpm.d/zzz-php_settings.conf
+            # Make sure you create files logs/php-error.log and logs/php-access.log
+            - ./logs/php-error.log:/var/log/error.log
+            - ./logs/php-access.log:/var/log/access.log
+            - ./php.ini:/usr/local/etc/php/php.ini
+        restart: always
+        
+    mysql:
+        image: mariadb:latest
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 'password'
+            MYSQL_USER: 'andy'
+            MYSQL_PASSWORD: '!APasswordHere'
+            MYSQL_DATABASE: 'kyc'
+        volumes:
+            - ./mysql:/var/lib/mysql
+        ports:
+            - 3306:3306
+        restart: always
+
