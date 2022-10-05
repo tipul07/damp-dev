@@ -1,62 +1,32 @@
-FROM php:fpm
-RUN apt-get update
+FROM ubuntu:22.04
+ARG DEBIAN_FRONTEND=noninteractive
+MAINTAINER Andy <andrei.orghici@nuvei.com>
 
-RUN apt-get install -y --no-install-recommends \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg-dev \
-    #libmagickwand-dev \
-    libpng-dev \
-    libwebp-dev \
-    libzip-dev \
-    libxml2-dev \
-	libbz2-dev \
-	libxslt1-dev \
-	#libcurl4-openssl-dev \
-	apt-utils software-properties-common openssl telnet
-
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+###
+### Envs
+###
+ENV ONB_PHP_VERSION="8.1"
 
 RUN set -eux && \
-        apt-get install -y \
-        imagemagick cron mc git nodejs zip
-		
-RUN docker-php-ext-install -j "$(nproc)" \
-    soap \
-	#curl \
-	#ssh2 \
-	pdo \
-    pdo_mysql \
-    mysqli \
-	# sqlite3 \ (Already exists)
-	# mbstring \
-    bcmath \
-    exif \
-    gd \
-    intl \
-    zip \
-	bz2 \
-	#xmlrpc \
-	xsl \
-	xml
+        apt-get update && apt-get install -y \
+        curl apt-utils software-properties-common openssl telnet ca-certificates imagemagick cron mc git zip
 
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg \
-    --with-webp
+# Forcepoint certificate
+COPY files/forcepoint.crt /usr/local/share/ca-certificates/forcepoint.crt
+RUN update-ca-certificates
 
-#RUN pecl install xdebug && docker-php-ext-enable xdebug
+# In PHP 8.0 json library got built-in, so add php${ONB_PHP_VERSION}-json if you use lower version of PHP than 8.0
+RUN add-apt-repository ppa:ondrej/php && apt-get update && apt-get install -y \
+        php${ONB_PHP_VERSION} php${ONB_PHP_VERSION}-fpm php${ONB_PHP_VERSION}-cli php${ONB_PHP_VERSION}-soap \
+        php${ONB_PHP_VERSION}-xml php${ONB_PHP_VERSION}-bcmath php${ONB_PHP_VERSION}-xmlrpc php${ONB_PHP_VERSION}-bz2 php${ONB_PHP_VERSION}-curl \
+        php${ONB_PHP_VERSION}-mbstring php${ONB_PHP_VERSION}-xsl php${ONB_PHP_VERSION}-gd php${ONB_PHP_VERSION}-intl php${ONB_PHP_VERSION}-mysql php${ONB_PHP_VERSION}-zip \
+        php${ONB_PHP_VERSION}-ssh2 php${ONB_PHP_VERSION}-sqlite3
+        #php${ONB_PHP_VERSION}-json
 
-#RUN pecl install imagick-3.7.0 && docker-php-ext-enable imagick
-
+# Install composer 2...
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN set -eux; \
-docker-php-ext-enable opcache; \
-{ \
-echo 'opcache.memory_consumption=128'; \
-echo 'opcache.interned_strings_buffer=8'; \
-echo 'opcache.max_accelerated_files=4000'; \
-echo 'opcache.revalidate_freq=2'; \
-echo 'opcache.fast_shutdown=1'; \
-} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+COPY ./files/docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT docker-entrypoint.sh php-fpm $ONB_PHP_VERSION
+STOPSIGNAL SIGQUIT

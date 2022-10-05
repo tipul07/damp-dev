@@ -21,16 +21,23 @@ services:
             context: .
             dockerfile: php.Dockerfile
         container_name: php
+        environment:
+            ONB_PHP_VERSION: '8.1'
         # Port is exported in PHP-FPM pool settings
         #ports:
         #    - 9000:9000
         volumes:
+            - ./files/in_docker:/from_host
+            - ./config/php${ONB_PHP_VERSION}/php-fpm.ini:/etc/php/${ONB_PHP_VERSION}/fpm/php.ini
+            - ./config/php${ONB_PHP_VERSION}/pool.d:/etc/php/${ONB_PHP_VERSION}/fpm/pool.d
+            - ./logs:/var/log/php-fpm
             - ./src:/srv/www
-            - ./php_settings.conf:/usr/local/etc/php-fpm.d/zzz-php_settings.conf
+            #- ./php_settings.conf:/usr/local/etc/php-fpm.d/zzz-php_settings.conf
             # Make sure you create files logs/php-error.log and logs/php-access.log
-            - ./logs/php-error.log:/var/log/error.log
-            - ./logs/php-access.log:/var/log/access.log
-            - ./php.ini:/usr/local/etc/php/php.ini
+            #- ./logs/php-error.log:/var/log/error.log
+            #- ./logs/php-access.log:/var/log/access.log
+            #- ./php.ini:/usr/local/etc/php/php.ini
+            #- ./files/forcepoint.crt:/usr/local/share/ca-certificates/forcepoint.crt
         restart: always
         
     mysql:
@@ -39,11 +46,19 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: 'password'
             MYSQL_USER: 'andy'
-            MYSQL_PASSWORD: '!APasswordHere'
+            MYSQL_PASSWORD: '!Andrei__'
             MYSQL_DATABASE: 'kyc'
         volumes:
             - ./mysql:/var/lib/mysql
         ports:
-            - 3306:3306
+            - "3306:3306"
         restart: always
+
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - "8081:80"
+        environment:
+            - PMA_ARBITRARY=1
 

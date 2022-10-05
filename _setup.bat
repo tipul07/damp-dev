@@ -8,13 +8,13 @@ if not exist logs\php-error.log (
     copy logs\php-error.dist.log logs\php-error.log
 ) 
 
+mkdir src
+
 if not exist src\index.php (
     copy files\index.php src\index.php
 )
 if not exist logs\index.html (
     copy files\index.html src\index.html
 )
-
-mkdir src
 
 echo DONE
