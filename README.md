@@ -16,7 +16,7 @@ Docker Apache-MySQL-PHP dev environment
 # Testing PHP - MySQL connection
 1. Open browser and go to `http://127.0.0.1:8080/`
 2. You should see `Connected successfully`
-3. Once all is ok
+3. Once all is ok, you can copy project files in `src` directory.
 
 # Project Files Setup
 1. Project files should be copied to `src/` directory (`index.php` file which is the entry point of the project should be located in `src/` directory)
@@ -24,3 +24,6 @@ Docker Apache-MySQL-PHP dev environment
 3. Do `docker exec -it php bash` and make sure all symlinks in the project are updated to match the new paths.
 4. To test working copy is ok, open browser and go to `http://127.0.0.1:8080/`.
 
+# PHPMyAdmin
+1. For database management, you can use `phpmyadmin` image by opening `http://127.0.0.1:8081/` in browser.
+2. In order to login, you should use: Username `root`, Password the password used in `docker-compose.yml` file (under `services.mysql.environment.MYSQL_ROOT_PASSWORD`)

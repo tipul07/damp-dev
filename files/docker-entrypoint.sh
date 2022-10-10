@@ -74,6 +74,9 @@ if [ "$1" = 'php-fpm' ]; then
   # Clean pools to be sure only desired pools are created...
   eval_cmd "rm -f /etc/php/${php_fpm_ver}/fpm/pool.d/*"
 
+  # Make sure we have /run/php dir
+  eval_cmd "mkdir /run/php"
+
   # Check crontab file...
   if [ -f "$host_dir/cron.txt" ] && [ -r "$host_dir/cron.txt" ]; then
 
@@ -124,7 +127,7 @@ if [ "$1" = 'php-fpm' ]; then
   service cron restart
   echo "DONE"
 
-  eval "/usr/sbin/php-fpm${php_fpm_ver} --nodaemonize --fpm-config /etc/php/${php_fpm_ver}/fpm/php-fpm.conf"
+  eval "/usr/sbin/php-fpm${php_fpm_ver} --nodaemonize --fpm-config /etc/php/${php_fpm_ver}/fpm/php-fpm.conf --pid /run/php${php_fpm_ver}-fpm.pid"
 
 fi
 

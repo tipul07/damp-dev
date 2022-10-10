@@ -1,16 +1,18 @@
-version: '3'
+version: "3"
 services:
     web:
         build:
             context: .
             dockerfile: apache2.Dockerfile
+        image: nuvei/kyc-lamp-apache
         container_name: web
         environment:
-            TZ: 'UTC'
+            TZ: "UTC"
         ports:
             - "8080:80"
         volumes:
-            - ./apache2.conf:/etc/apache2/apache2.conf
+            - ./files/config/apache/apache2.conf:/etc/apache2/apache2.conf
+            - ./logs/apache:/var/log/apache2
             - ./src:/srv/www
         depends_on:
             - mysql
@@ -20,34 +22,24 @@ services:
         build:
             context: .
             dockerfile: php.Dockerfile
+        image: nuvei/kyc-lamp-php
         container_name: php
-        environment:
-            ONB_PHP_VERSION: '8.1'
-        # Port is exported in PHP-FPM pool settings
-        #ports:
-        #    - 9000:9000
         volumes:
             - ./files/in_docker:/from_host
-            - ./config/php${ONB_PHP_VERSION}/php-fpm.ini:/etc/php/${ONB_PHP_VERSION}/fpm/php.ini
-            - ./config/php${ONB_PHP_VERSION}/pool.d:/etc/php/${ONB_PHP_VERSION}/fpm/pool.d
+            - ./files/config/php${ONB_PHP_VERSION:-8.1}/php-fpm.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/fpm/php.ini
+            - ./files/config/php${ONB_PHP_VERSION:-8.1}/pool.d:/etc/php/${ONB_PHP_VERSION:-8.1}/fpm/pool.d
             - ./logs:/var/log/php-fpm
             - ./src:/srv/www
-            #- ./php_settings.conf:/usr/local/etc/php-fpm.d/zzz-php_settings.conf
-            # Make sure you create files logs/php-error.log and logs/php-access.log
-            #- ./logs/php-error.log:/var/log/error.log
-            #- ./logs/php-access.log:/var/log/access.log
-            #- ./php.ini:/usr/local/etc/php/php.ini
-            #- ./files/forcepoint.crt:/usr/local/share/ca-certificates/forcepoint.crt
         restart: always
         
     mysql:
         image: mariadb:latest
         container_name: mysql
         environment:
-            MYSQL_ROOT_PASSWORD: 'password'
-            MYSQL_USER: 'andy'
-            MYSQL_PASSWORD: '!Andrei__'
-            MYSQL_DATABASE: 'kyc'
+            MYSQL_ROOT_PASSWORD: "password"
+            MYSQL_USER: "andy"
+            MYSQL_PASSWORD: "!Andrei__"
+            MYSQL_DATABASE: "kyc"
         volumes:
             - ./mysql:/var/lib/mysql
         ports:
@@ -56,9 +48,12 @@ services:
 
     phpmyadmin:
         image: phpmyadmin
-        restart: always
         ports:
             - "8081:80"
+        volumes:
+            - ./files/config/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
         environment:
-            - PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_PORT=3306
+        restart: always
 
