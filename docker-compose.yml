@@ -28,6 +28,7 @@ services:
             - ./files/in_docker:/from_host
             - ./files/config/php${ONB_PHP_VERSION:-8.1}/php-fpm.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/fpm/php.ini
             - ./files/config/php${ONB_PHP_VERSION:-8.1}/pool.d:/etc/php/${ONB_PHP_VERSION:-8.1}/fpm/pool.d
+            - ./files/config/xdebug/xdebug.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/mods-available/xdebug.ini
             - ./logs:/var/log/php-fpm
             - ./src:/srv/www
         restart: always

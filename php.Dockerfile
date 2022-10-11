@@ -15,7 +15,7 @@ RUN add-apt-repository ppa:ondrej/php && apt-get update && apt-get install -y \
         php${ONB_PHP_VERSION} php${ONB_PHP_VERSION}-fpm php${ONB_PHP_VERSION}-cli php${ONB_PHP_VERSION}-soap \
         php${ONB_PHP_VERSION}-xml php${ONB_PHP_VERSION}-bcmath php${ONB_PHP_VERSION}-xmlrpc php${ONB_PHP_VERSION}-bz2 php${ONB_PHP_VERSION}-curl \
         php${ONB_PHP_VERSION}-mbstring php${ONB_PHP_VERSION}-gd php${ONB_PHP_VERSION}-intl php${ONB_PHP_VERSION}-mysql php${ONB_PHP_VERSION}-zip \
-        php${ONB_PHP_VERSION}-ssh2 php${ONB_PHP_VERSION}-sqlite3
+        php${ONB_PHP_VERSION}-ssh2 php${ONB_PHP_VERSION}-sqlite3 php${ONB_PHP_VERSION}-xdebug
         #php${ONB_PHP_VERSION}-json
 
 # Install composer 2...
