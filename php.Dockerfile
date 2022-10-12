@@ -21,7 +21,7 @@ RUN add-apt-repository ppa:ondrej/php && apt-get update && apt-get install -y \
 # Install composer 2...
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY ./files/docker-entrypoint.sh /usr/local/bin/
+# COPY ./files/docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT docker-entrypoint.sh php-fpm ${ONB_PHP_VERSION}
 STOPSIGNAL SIGQUIT
