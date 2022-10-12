@@ -23,5 +23,5 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # COPY ./files/docker-entrypoint.sh /usr/local/bin/
 
-ENTRYPOINT docker-entrypoint.sh php-fpm ${ONB_PHP_VERSION}
+ENTRYPOINT /usr/local/bin/docker-entrypoint.sh php-fpm ${ONB_PHP_VERSION}
 STOPSIGNAL SIGQUIT
