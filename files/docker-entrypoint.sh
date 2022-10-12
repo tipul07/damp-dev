@@ -75,7 +75,7 @@ if [ "$1" = 'php-fpm' ]; then
   eval_cmd "rm -f /etc/php/${php_fpm_ver}/fpm/pool.d/*"
 
   # Make sure we have /run/php dir
-  eval_cmd "[-d /run/php] || mkdir /run/php"
+  eval_cmd "[ -d /run/php ] || mkdir /run/php"
 
   # Check crontab file...
   if [ -f "$host_dir/cron.txt" ] && [ -r "$host_dir/cron.txt" ]; then
