@@ -40,7 +40,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: "password"
             MYSQL_USER: "andy"
-            MYSQL_PASSWORD: "!Andrei__"
+            MYSQL_PASSWORD: "!APasswordHere"
             MYSQL_DATABASE: "kyc"
         volumes:
             - ./mysql:/var/lib/mysql
