@@ -1,5 +1,11 @@
 version: "3.3"
+
+networks:
+    devnet:
+        external: true
+
 services:
+
     web:
         build:
             context: .
@@ -15,10 +21,13 @@ services:
             - ./logs/apache:/var/log/apache2
             #- ./files/config/apache/apache2.conf:/etc/apache2/apache2.conf
             - ./files/config/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        networks:
+            # devnet network should be created before using _setup.bat script
+            - devnet
         depends_on:
             - mysql
         restart: always
-        
+
     php:
         build:
             context: .
@@ -33,8 +42,11 @@ services:
             - ./files/config/xdebug/xdebug.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/mods-available/xdebug.ini
             - ./logs:/var/log/php-fpm
             - ./src:/srv/www
+        networks:
+            # devnet network should be created before using _setup.bat script
+            - devnet
         restart: always
-        
+
     mysql:
         image: mariadb:latest
         container_name: mysql
@@ -47,6 +59,9 @@ services:
             - ./mysql:/var/lib/mysql
         ports:
             - "3306:3306"
+        networks:
+            # devnet network should be created before using _setup.bat script
+            - devnet
         restart: always
 
     phpmyadmin:
@@ -59,4 +74,6 @@ services:
             - PMA_HOST=mysql
             - PMA_PORT=3306
         restart: always
-
+        networks:
+            # devnet network should be created before using _setup.bat script
+            - devnet

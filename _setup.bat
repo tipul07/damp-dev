@@ -1,12 +1,9 @@
 @echo off
 echo Setting up repository...
 
-rem if not exist logs\php-access.log (
-rem     copy logs\php-access.dist.log logs\php-access.log
-rem )
-rem if not exist logs\php-error.log (
-rem     copy logs\php-error.dist.log logs\php-error.log
-rem )
+if not exist files\config\xdebug\xdebug.ini (
+    copy files\config\xdebug\xdebug.dist.ini files\config\xdebug\xdebug.ini
+)
 
 mkdir src
 
@@ -20,6 +17,10 @@ if not exist logs\index.html (
 if not exist .env (
     copy .env.dist .env
 )
+
+echo Setting up bridge network...
+
+docker network create --driver bridge --subnet 172.22.0.0/24 --gateway 172.22.0.1 devnet
 
 echo DONE
 echo You can run now docker-compose up -d
