@@ -1,4 +1,4 @@
-version: "3"
+version: "3.3"
 services:
     web:
         build:
@@ -9,11 +9,12 @@ services:
         environment:
             TZ: "UTC"
         ports:
-            - "8080:80"
+            - "80:80"
         volumes:
-            - ./files/config/apache/apache2.conf:/etc/apache2/apache2.conf
-            - ./logs/apache:/var/log/apache2
             - ./src:/srv/www
+            - ./logs/apache:/var/log/apache2
+            #- ./files/config/apache/apache2.conf:/etc/apache2/apache2.conf
+            - ./files/config/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
         depends_on:
             - mysql
         restart: always
