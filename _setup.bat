@@ -5,6 +5,14 @@ if not exist files\config\xdebug\xdebug.ini (
     copy files\config\xdebug\xdebug.dist.ini files\config\xdebug\xdebug.ini
 )
 
+if not exist files\config\apache\000-default.conf (
+    copy files\config\apache\000-default.dist.conf files\config\apache\000-default.conf
+)
+
+if not exist files\config\apache\default-ssl.conf (
+    copy files\config\apache\default-ssl.dist.conf files\config\apache\default-ssl.conf
+)
+
 if not exist files\in_docker\cron.txt (
     copy files\in_docker\cron.dist.txt files\in_docker\cron.txt
 )

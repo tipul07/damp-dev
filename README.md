@@ -6,6 +6,9 @@ Docker Apache-MySQL-PHP dev environment
 1. After pulling docker files, run `_setup.bat`.
 2. Do `docker-compose up -d` which will download and build your images
 
+# Apache Setup
+1. Everything should work out-of-the-box, but if you need customization for your default site (certbot, custom domain, etc) you can change `files/config/apache/000-default.conf` for http (port 80) virtual site, or `files/config/apache/default-ssl.conf` for https (port 443) virtual site.
+
 # MySQL Setup
 1. Dump your database from where it is now using `mysqldump -u {MySQLUser} -p {OldDatabaseName} > {OldDatabaseName}.sql`
 2. Make sure your containers are started `docker-compose up -d`
