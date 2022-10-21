@@ -18,6 +18,10 @@ Docker Apache-MySQL-PHP dev environment
 2. You should see `Connected successfully`
 3. Once all is ok, you can copy project files in `src` directory.
 
+# PHPMyAdmin
+1. For database management, you can use `phpmyadmin` image by opening `http://127.0.0.1:8081/` in browser.
+2. In order to login, you should use: Username `root`, Password the password used in `docker-compose.yml` file (under `services.mysql.environment.MYSQL_ROOT_PASSWORD`). Default: `password`
+
 # Project Files Setup
 1. Project files should be copied to `src/` directory (`index.php` file which is the entry point of the project should be located in `src/` directory)
 2. `src/` directory will be mounted on both `web` and `php` docker images in `/srv/www`
@@ -29,6 +33,6 @@ Docker Apache-MySQL-PHP dev environment
 2. Important to notice is `xdebug.idekey=PHPSTORM` which should be changed (or not depending on Xdebug key setup in PhpStorm)
 3. If you didn't change anything in `_setup.bat` you can ignore this point. `xdebug.client_host=172.22.0.1` is the gateway IP of `devnet` bridge network created in `_setup.bat` script. If you change IP class for this subnet, you should change this IP in default gateway of the bridge subnet created for docker images.
 
-# PHPMyAdmin
-1. For database management, you can use `phpmyadmin` image by opening `http://127.0.0.1:8081/` in browser.
-2. In order to login, you should use: Username `root`, Password the password used in `docker-compose.yml` file (under `services.mysql.environment.MYSQL_ROOT_PASSWORD`). Default: `password`
+# Cron jobs
+1. If there are any cronjobs required in the php docker image, they can be added in `files/in_docker/cron.txt`
+2. `files/in_docker/cron.txt` file becomes available only after running `_setup.bat` file.

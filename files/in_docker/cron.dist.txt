@@ -1,1 +1,3 @@
-# Add commands you want to add to crontab of PHP docker instance user
+# Specify commands you want to add to crontab of PHP docker instance user
+# After adding commands in this file, do docker-compose down and docker-compose up -d
+# in order for cron to take this file in consideration

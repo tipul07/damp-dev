@@ -5,6 +5,10 @@ if not exist files\config\xdebug\xdebug.ini (
     copy files\config\xdebug\xdebug.dist.ini files\config\xdebug\xdebug.ini
 )
 
+if not exist files\in_docker\cron.txt (
+    copy files\in_docker\cron.dist.txt files\in_docker\cron.txt
+)
+
 mkdir src
 
 if not exist src\index.php (
