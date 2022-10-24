@@ -39,3 +39,24 @@ Docker Apache-MySQL-PHP dev environment
 # Cron jobs
 1. If there are any cronjobs required in the php docker image, they can be added in `files/in_docker/cron.txt`
 2. `files/in_docker/cron.txt` file becomes available only after running `_setup.bat` file.
+
+# Supervisor workers
+1. If there are supervisor workers needed (usually in Laravel setup), we can add workers in `files/config/supervisor`.
+2. This directory will be mounted in `/etc/supervisor/conf.d`, so all `*.conf` files will be read by supervisor from that directory.
+3. In order to have supervisor worker logs permanent and exposed in host (in `logs/supervisor`), `stdout_logfile` variable should point log files to `/srv/logs/supervisor` (check the example below).
+3. An example of supervisor worker:
+```ini
+[program:ekyc-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=/usr/bin/php /srv/www/ekyc/ekyc/artisan queue:work database --sleep=3 --tries=5 --max-time=3600
+environment=HOME="/srv/www",USER="www-data"
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/srv/logs/supervisor/ekyc-worker.log
+stopwaitsecs=3600
+```

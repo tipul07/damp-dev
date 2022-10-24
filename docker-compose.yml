@@ -40,7 +40,9 @@ services:
             - ./files/config/php${ONB_PHP_VERSION:-8.1}/php-fpm.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/fpm/php.ini
             - ./files/config/php${ONB_PHP_VERSION:-8.1}/pool.d:/etc/php/${ONB_PHP_VERSION:-8.1}/fpm/pool.d
             - ./files/config/xdebug/xdebug.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/mods-available/xdebug.ini
+            - ./files/config/supervisor:/etc/supervisor/conf.d
             - ./logs:/var/log/php-fpm
+            - ./logs/supervisor:/srv/logs/supervisor
             - ./src:/srv/www
         networks:
             # devnet network should be created before using _setup.bat script

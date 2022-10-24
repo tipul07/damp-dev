@@ -4,7 +4,7 @@ MAINTAINER Andy <andrei.orghici@nuvei.com>
 
 RUN set -eux && \
         apt-get update && apt-get install -y \
-        curl apt-utils software-properties-common openssl telnet ca-certificates imagemagick cron mc git zip
+        curl apt-utils software-properties-common openssl telnet ca-certificates imagemagick cron mc git zip supervisor
 
 # Forcepoint certificate
 COPY files/forcepoint.crt /usr/local/share/ca-certificates/forcepoint.crt
