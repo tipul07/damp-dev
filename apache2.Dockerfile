@@ -1,4 +1,4 @@
-FROM ubuntu/apache2:latest
+FROM ubuntu/apache2:2.4-22.04_edge
 RUN apt-get update
 
 RUN apt-get install -y --no-install-recommends \

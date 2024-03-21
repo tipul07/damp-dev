@@ -10,7 +10,7 @@ services:
         build:
             context: .
             dockerfile: apache2.Dockerfile
-        image: nuvei/kyc-lamp-apache
+        image: andys2p/kyc-lamp-apache
         container_name: web
         environment:
             TZ: "UTC"
@@ -32,7 +32,7 @@ services:
         build:
             context: .
             dockerfile: php.Dockerfile
-        image: nuvei/kyc-lamp-php
+        image: andys2p/kyc-lamp-php
         container_name: php
         volumes:
             - ./files/in_docker:/from_host
@@ -42,7 +42,7 @@ services:
             - ./files/config/xdebug/xdebug.ini:/etc/php/${ONB_PHP_VERSION:-8.1}/mods-available/xdebug.ini
             - ./files/config/supervisor:/etc/supervisor/conf.d
             - ./logs:/var/log/php-fpm
-            - ./logs/supervisor:/srv/logs/supervisor
+            #- ./logs/supervisor:/srv/logs/supervisor
             - ./src:/srv/www
         networks:
             # devnet network should be created before using _setup.bat script
@@ -50,12 +50,12 @@ services:
         restart: always
 
     mysql:
-        image: mariadb:latest
+        image: mariadb:11.2
         container_name: mysql
         environment:
             MYSQL_ROOT_PASSWORD: "password"
-            MYSQL_USER: "andy"
-            MYSQL_PASSWORD: "!APasswordHere"
+            MYSQL_USER: "user"
+            MYSQL_PASSWORD: "password"
             MYSQL_DATABASE: "kyc"
         volumes:
             - ./mysql:/var/lib/mysql
@@ -75,6 +75,7 @@ services:
         environment:
             - PMA_HOST=mysql
             - PMA_PORT=3306
+            - UPLOAD_LIMIT=300M
         restart: always
         networks:
             # devnet network should be created before using _setup.bat script

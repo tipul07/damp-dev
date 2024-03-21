@@ -1,8 +1,8 @@
 <?php
 
 $servername = 'mysql';
-$username = 'andy';
-$password = '!APasswordHere';
+$username = 'user';
+$password = 'password';
 
 try {
     // Create connection

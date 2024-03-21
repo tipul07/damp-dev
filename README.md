@@ -60,3 +60,47 @@ redirect_stderr=true
 stdout_logfile=/srv/logs/supervisor/ekyc-worker.log
 stopwaitsecs=3600
 ```
+
+# Rebuilding images
+
+1. If you did any changes in ``php.Dockerfile`` or ``apache2.Dockerfile``, build new the version using
+
+    ```bash
+    docker build -t andys2p/kyc-lamp-php:X.X -f php.Dockerfile .
+    ```
+	or
+    ```bash
+    docker build -t andys2p/kyc-lamp-apache:X.X -f web.Dockerfile .
+    ```
+
+	Common tag is `latest` if we want to build "default" images.
+   
+    Example
+
+    ```bash
+    docker build -t andys2p/kyc-lamp-php:latest -f php.Dockerfile .
+    ```
+	or for a specific version
+    ```bash
+    docker build -t andys2p/kyc-lamp-php:8.1 -f php.Dockerfile .
+    ```
+   
+2. If changes should be available in the future builds push to docker.io with
+
+    ```bash
+    docker push andys2p/kyc-lamp-php:X.X
+    ```
+	or
+    ```bash
+    docker push andys2p/kyc-lamp-apache:X.X
+    ```
+    
+    Example
+
+    ```bash
+    docker push andys2p/kyc-lamp-php:latest
+    ```
+	or for a specific version
+    ```bash
+    docker push andys2p/kyc-lamp-php:8.1
+    ```

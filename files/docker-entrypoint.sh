@@ -125,7 +125,7 @@ if [ "$1" = 'php-fpm' ]; then
 
   echo "Restarting services..."
   service cron restart
-  service supervisor start
+  #service supervisor start
   echo "DONE"
 
   eval "/usr/sbin/php-fpm${php_fpm_ver} --nodaemonize --fpm-config /etc/php/${php_fpm_ver}/fpm/php-fpm.conf --pid /run/php${php_fpm_ver}-fpm.pid"
